@@ -1,6 +1,7 @@
 import adminModel from "../models/adminModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt, { genSalt } from "bcrypt";
+import productModel from "../models/productModel.js";
 
 const adminRegister = async (req, res) => {
   try {
@@ -112,48 +113,11 @@ const removeAdmin = async (req, res) => {
   }
 };
 
-const addProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedAdmin = await adminModel.findByIdAndDelete(id);
-    if (!deletedAdmin)
-      return res.json({ success: false, message: "Admin not found" });
-    res.json({ success: true, message: "Admin removed" });
-  } catch (error) {
-    res.json({ success: false, message: error.message });
-  }
-};
 
-const removeProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedProduct = await productModel.findByIdAndDelete(id);
-    if (!deletedProduct)
-      return res.json({ success: false, message: "Product not found" });
-    res.json({ success: true, message: "Product removed" });
-  } catch (error) {
-    res.json({ success: false, message: error.message });
-  }
-};
-
-const editProduct = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedAdmin = await adminModel.findByIdAndDelete(id);
-    if (!deletedAdmin)
-      return res.json({ success: false, message: "Admin not found" });
-    res.json({ success: true, message: "Admin removed" });
-  } catch (error) {
-    res.json({ success: false, message: error.message });
-  }
-};
 
 export {
   adminRegister,
   adminLogin,
   updateProfile,
   removeAdmin,
-  editProduct,
-  removeProduct,
-  addProduct,
 };
