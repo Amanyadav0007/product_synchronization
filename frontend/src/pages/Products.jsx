@@ -1,21 +1,23 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const { backendUrl, token, loading, setLoading } = useContext(AppContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios(`${backendUrl}/product`, {
+        const response = await axios.get(`${backendUrl}/product`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
-          setProducts(response.data.products);
+          setAllProducts(response.data.products);
+          console.log(allProducts);
+
         } else {
           toast.error(response.data.message);
         }
@@ -26,14 +28,12 @@ const Products = () => {
       }
     };
     fetchProducts();
+
   }, [token, setLoading, backendUrl]);
 
-  {
-    loading ? <p>Products fetching...</p> : null;
-  }
 
   return <div>
-    
+    gdhghdgf
   </div>;
 };
 
