@@ -47,14 +47,7 @@ const Products = () => {
 
       {/* Rows */}
       {allProducts.map((product, index) => (
-        <Product
-          key={product._id}
-          index={index + 1}
-          name={product.name}
-          brand={product.brand}
-          price={product.price}
-          quantity={product.quantity}
-        />
+        <Product key={product._id} index={index} product={product} />
       ))}
     </div>
   );

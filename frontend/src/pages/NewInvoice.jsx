@@ -1,87 +1,90 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const NewInvoice = () => {
-  const [items, setItems] = useState([]);
+  const [list, setList] = useState([]);
+  const [product, setProduct] = useState({
+    name: "",
+    brand: "",
+    price: "",
+    quantity: "",
+  });
 
-  const onProductAdd = () => {
-    // later: push product into items[]
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const onSubmitHandler = (e) => {
+  const onProductAdd = (e) => {
     e.preventDefault();
-    // export invoice
+
+    if (
+      !product.name ||
+      !product.brand ||
+      !product.price ||
+      !product.quantity
+    ) {
+      return alert("All fields required");
+    }
+
+    setList((prev) => [...prev, { ...product, id: Date.now() }]);
+
+    setProduct({
+      name: "",
+      brand: "",
+      price: "",
+      quantity: "",
+    });
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-6">New Invoice</h2>
+    <div>
+      <form onSubmit={onProductAdd}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={product.name}
+          onChange={handleChange}
+        />
 
-      <form onSubmit={onSubmitHandler} className="space-y-6">
-        {/* Client Info */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <input
-            type="text"
-            name="client"
-            placeholder="Client Name"
-            className="input"
-          />
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            className="input"
-          />
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            className="input"
-          />
-        </div>
+        <input
+          type="text"
+          name="brand"
+          placeholder="Brand"
+          value={product.brand}
+          onChange={handleChange}
+        />
 
-        {/* Product Add Row */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <input
-            type="text"
-            placeholder="Product"
-            className="input"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            className="input"
-          />
-          <input
-            type="number"
-            placeholder="Qty"
-            className="input"
-          />
-          <button
-            type="button"
-            onClick={onProductAdd}
-            className="bg-blue-700 text-white rounded-lg px-4 py-2"
-          >
-            Add Product
-          </button>
-        </div>
+        <input
+          type="text"
+          name="quantity"
+          placeholder="Quantity"
+          value={product.quantity}
+          onChange={handleChange}
+        />
 
-        {/* Product List (future) */}
-        {items.length > 0 && (
-          <div className="border rounded-lg p-4 space-y-2">
-            {/* map items here */}
-          </div>
-        )}
+        <input
+          type="text"
+          name="price"
+          placeholder="Price"
+          value={product.price}
+          onChange={handleChange}
+        />
 
-        {/* Actions */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-red-700 text-white font-medium rounded-lg px-6 py-2"
-          >
-            Export Invoice
-          </button>
-        </div>
+        <button type="submit" className="px-3 py-2 rounded bg-black text-white">
+          Add
+        </button>
       </form>
+
+      {list.map((item, index) => (
+        <p key={item.id}>
+          {index + 1}. {item.name} ({item.brand}) — ₹{item.price} ×{" "}
+          {item.quantity}
+        </p>
+      ))}
     </div>
   );
 };

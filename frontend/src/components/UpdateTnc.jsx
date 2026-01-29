@@ -71,10 +71,10 @@ const UpdateTnc = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-3 sm:px-0">
+    <div className="px-3 sm:px-0">
       <form
         onSubmit={onTncUpdate}
-        className="bg-white border rounded-2xl shadow-md p-4 sm:p-6 space-y-5"
+        className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 sm:p-6 space-y-5"
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h2 className="text-xl font-semibold text-gray-800">

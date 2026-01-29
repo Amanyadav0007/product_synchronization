@@ -1,14 +1,25 @@
+import adminModel from "../models/adminModel.js";
 import productModel from "../models/productModel.js";
 
 const addProduct = async (req, res) => {
   try {
+    const adminId = req.admin.id;
     const { name, brand, price, quantity } = req.body;
     if (!name || !brand || !price || !quantity) {
       return res.json({ success: false, message: "All fields required!" });
     }
 
-    const newProduct = await productModel({ name, brand, price, quantity });
+    const newProduct = await productModel({
+      name,
+      brand,
+      price,
+      quantity,
+    });
     await newProduct.save();
+
+    const adminDoc = await adminModel.findById(adminId);
+    adminDoc.products.push(newProduct._id);
+    await adminDoc.save();
 
     res.json({ success: true, message: "New product added successfully!" });
   } catch (error) {
@@ -30,10 +41,11 @@ const removeProduct = async (req, res) => {
 
 const productList = async (req, res) => {
   try {
-    const products = await productModel.find({});
-    if (!products)
+    const adminId = req.admin.id;
+    const admin = await adminModel.findById(adminId).populate("products");
+    if (!admin || admin.products.length === 0)
       return res.json({ success: false, message: "Empty Inventory" });
-    res.json({ success: true, products });
+    res.json({ success: true, products: admin.products });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

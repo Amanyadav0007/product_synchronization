@@ -21,6 +21,8 @@ const adminSechma = new mongoose.Schema(
     branch: { type: String, default: "" },
     account: { type: String, default: "" },
     ifsc: { type: String, default: "" },
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    invoices: [{ type: mongoose.Schema.Types.ObjectId, ref: "invoice" }],
   },
   { timestamps: true },
 );

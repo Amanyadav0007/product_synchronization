@@ -4,7 +4,7 @@ import UpdateTnc from "../components/UpdateTnc";
 
 const Profile = () => {
   return (
-    <div className="max-w-4xl mx-auto bg-white">
+    <div className="w-full m-6 bg-white">
       <UpdateBusiness />
       <UpdateBank />
       <UpdateTnc />

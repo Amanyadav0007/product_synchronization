@@ -2,11 +2,8 @@ import mongoose from "mongoose";
 
 const invoiceSechma = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    brand: { type: String, required: true, unique: true },
-    base_price: { type: String },
-    quantity: { type: Number },
-    description: { type: String },
+    client: { type: mongoose.Schema.Types.ObjectId, ref: "client" },
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
   },
   { timestamps: true },
 );
