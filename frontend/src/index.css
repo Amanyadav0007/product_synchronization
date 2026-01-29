@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+/* =========================
+   INVOICE PDF SAFE STYLES
+   ========================= */
+
+#invoice-pdf {
+  width: 210mm; /* A4 width */
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Remove Tailwind OKLCH colors for PDF */
+#invoice-pdf,
+#invoice-pdf * {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+/* Inputs */
+.invoice-input {
+  border: 1px solid #000;
+  padding: 4px 6px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Table header */
+.invoice-table-header {
+  background-color: #374151 !important; /* gray-700 */
+  color: #ffffff !important;
+}
+
+/* Hide UI-only elements in PDF */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Prevent page break inside rows */
+tr,
+.invoice-row {
+  page-break-inside: avoid;
+}
