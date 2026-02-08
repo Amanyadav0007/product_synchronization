@@ -60,8 +60,6 @@ const UpdateTnc = () => {
         toast.success(response.data.message);
         setIsEditing(false);
         setTnc(cleanedTnc);
-      } else {
-        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);

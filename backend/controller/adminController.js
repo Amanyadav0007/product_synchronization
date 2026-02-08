@@ -63,8 +63,6 @@ const updateBankDetails = async (req, res) => {
       { bank, branch, account, ifsc },
       { new: true },
     );
-    if (!bankDetails)
-      return res.json({ success: false, message: "Something went wrong" });
     res.json({ success: true, message: "Bank Details Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -74,14 +72,12 @@ const updateBankDetails = async (req, res) => {
 const updateBusinessDetails = async (req, res) => {
   try {
     const id = req.admin.id;
-    const { name, address, phone, gst, pan, msme } = req.body;
+    const { name, address, city, state, pin, phone, gst, pan, msme } = req.body;
     const businessDetails = await adminModel.findByIdAndUpdate(
       id,
-      { business: name, address, phone, gst, pan, msme },
+      { business: name, address, city, state, pin, phone, gst, pan, msme },
       { new: true },
     );
-    if (!businessDetails)
-      return res.json({ success: false, message: "Something went wrong" });
     res.json({ success: true, message: "Business Details Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });
@@ -97,8 +93,6 @@ const updateTnc = async (req, res) => {
       { tnc },
       { new: true },
     );
-    if (!cleanedTnc)
-      return res.json({ success: false, message: "Something went wrong" });
     res.json({ success: true, message: "Terms & Conditions Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });

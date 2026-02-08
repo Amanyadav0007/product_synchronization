@@ -10,6 +10,9 @@ const UpdateBusiness = () => {
     name: "",
     phone: "",
     address: "",
+    city: "",
+    state: "",
+    pin: "",
     gst: "",
     pan: "",
     msme: "",
@@ -24,6 +27,9 @@ const UpdateBusiness = () => {
         name: profile.business || "",
         phone: profile.phone || "",
         address: profile.address || "",
+        city: profile.city || "",
+        state: profile.state || "",
+        pin: profile.pin || "",
         gst: profile.gst || "",
         pan: profile.pan || "",
         msme: profile.msme || "",
@@ -54,8 +60,6 @@ const UpdateBusiness = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         setIsEditing(false);
-      } else {
-        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
@@ -97,7 +101,6 @@ const UpdateBusiness = () => {
           onChange={handleChange}
           disabled={!isEditing}
         />
-
         <Input
           label="Phone Number"
           name="phone"
@@ -105,7 +108,6 @@ const UpdateBusiness = () => {
           onChange={handleChange}
           disabled={!isEditing}
         />
-
         <Input
           label="GST Number"
           name="gst"
@@ -113,7 +115,6 @@ const UpdateBusiness = () => {
           onChange={handleChange}
           disabled={!isEditing}
         />
-
         <Input
           label="PAN Number"
           name="pan"
@@ -121,7 +122,6 @@ const UpdateBusiness = () => {
           onChange={handleChange}
           disabled={!isEditing}
         />
-
         <Input
           label="MSME Number"
           name="msme"
@@ -129,16 +129,34 @@ const UpdateBusiness = () => {
           onChange={handleChange}
           disabled={!isEditing}
         />
-
-        <div className="md:col-span-2">
-          <label className="text-sm font-medium">Business Address</label>
-          <textarea
-            name="address"
-            rows="3"
-            value={businessDetails.address}
+        <Input
+          label="Address"
+          name="address"
+          value={businessDetails.address}
+          onChange={handleChange}
+          disabled={!isEditing}
+        />
+        <div className="flex gap-6">
+          <Input
+            label="City"
+            name="city"
+            value={businessDetails.city}
             onChange={handleChange}
             disabled={!isEditing}
-            className="w-full mt-1 border px-3 py-2 rounded-lg resize-none disabled:bg-gray-100"
+          />
+          <Input
+            label="State"
+            name="state"
+            value={businessDetails.state}
+            onChange={handleChange}
+            disabled={!isEditing}
+          />
+          <Input
+            label="Pin"
+            name="pin"
+            value={businessDetails.pin}
+            onChange={handleChange}
+            disabled={!isEditing}
           />
         </div>
       </div>

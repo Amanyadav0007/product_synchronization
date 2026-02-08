@@ -17,7 +17,6 @@ app.use(cors());
 app.use("/admin", adminRouter);
 app.use("/product", productRouter);
 
-
 app.get("/", (req, res) => {
   res.send("Hi");
 });

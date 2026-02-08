@@ -47,8 +47,6 @@ const UpdateBank = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         setIsEditing(false);
-      } else {
-        toast.error(response.data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);

@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from "react";
 import { RxCross2, RxPlus } from "react-icons/rx";
 import { FiPrinter, FiRefreshCw } from "react-icons/fi";
 import Invoice from "../components/Invoice";
+import { toast } from "react-toastify";
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-IN", {
@@ -11,7 +12,7 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const calculateRowDetails = (price, quantity, gstPercent = 18) => {
+const calculateRowDetails = (price, quantity, gstPercent = 5) => {
   const totalRaw = price * quantity;
   const netAmount = (price * 100) / (100 + gstPercent);
   const taxableAmount = (totalRaw * 100) / (100 + gstPercent);
@@ -23,19 +24,18 @@ const calculateRowDetails = (price, quantity, gstPercent = 18) => {
 const NewInvoice = () => {
   const nameInputRef = useRef(null);
   const [items, setItems] = useState([]);
-
   const [client, setClient] = useState({
     name: "",
     phone: "",
     address: "",
   });
-
   const [product, setProduct] = useState({
     name: "",
     brand: "",
     price: "",
     quantity: "",
   });
+
   const totals = useMemo(() => {
     return items.reduce(
       (acc, item) => {
@@ -52,6 +52,7 @@ const NewInvoice = () => {
       { taxable: 0, gst: 0, grandTotal: 0 },
     );
   }, [items]);
+
   const handleClientChange = (e) => {
     setClient((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -92,7 +93,12 @@ const NewInvoice = () => {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
-  const handlePrint = () => window.print();
+  const handlePrint = () => {
+    if (!client.name || !client.phone || !client.address) {
+      return toast.error("Client Details Required");
+    }
+    window.print();
+  };
 
   const handleReset = () => {
     if (window.confirm("Clear all invoice data?")) {
@@ -156,7 +162,7 @@ const NewInvoice = () => {
           <div className="md:col-span-3">
             <Input
               name="brand"
-              placeholder="Brand (Optional)"
+              placeholder="Brand"
               value={product.brand}
               onChange={handleProductChange}
               label="Brand"
@@ -188,79 +194,44 @@ const NewInvoice = () => {
             </button>
           </div>
         </form>
-        <div className="overflow-x-auto border rounded-lg mb-6">
-          <table className="w-full text-sm text-left text-gray-600">
-            <thead className="bg-gray-100 text-gray-700 uppercase text-xs font-semibold">
-              <tr>
-                <th className="px-4 py-3 w-12">#</th>
-                <th className="px-4 py-3">Item Description</th>
-                <th className="px-4 py-3">Brand</th>
-                <th className="px-4 py-3 text-center">Qty</th>
-                <th className="px-4 py-3 text-right">Rate</th>
-                <th className="px-4 py-3 text-right">Net</th>
-                <th className="px-4 py-3 text-right">Taxable</th>
-                <th className="px-4 py-3 text-right">GST</th>
-                <th className="px-4 py-3 text-right">Total</th>
-                <th className="px-4 py-3 text-center w-12">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {items.length === 0 ? (
-                <tr>
-                  <td colSpan="8" className="text-center py-12 text-gray-400">
-                    <div className="flex flex-col items-center">
-                      <span className="text-lg">No items added</span>
-                      <span className="text-sm">
-                        Fill the form above to add products
-                      </span>
-                    </div>
+        <table className="invoice-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Item Description</th>
+              <th>Brand</th>
+              <th>Qty</th>
+              <th>Rate</th>
+              <th>Net</th>
+              <th>Taxable</th>
+              <th>GST</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item, index) => {
+              const { netAmount, taxableAmount, gstAmount, totalRaw } =
+                calculateRowDetails(item.price, item.quantity);
+              return (
+                <tr key={item.id || index}>
+                  <td>{index + 1}</td>
+                  <td className="font-bold">{item.name}</td>
+                  <td className="font-bold">{item.brand}</td>
+                  <td>{item.quantity}</td>
+                  <td>{formatCurrency(item.price)}</td>
+                  <td>{formatCurrency(netAmount)}</td>
+                  <td>{formatCurrency(taxableAmount)}</td>
+                  <td>{formatCurrency(gstAmount)}</td>
+                  <td className="font-bold">{formatCurrency(totalRaw)}</td>
+                  <td onClick={removeItem} className="font-bold text-2xl">
+                    <RxCross2 />
                   </td>
                 </tr>
-              ) : (
-                items.map((item, i) => {
-                  const { netAmount, taxableAmount, gstAmount, totalRaw } =
-                    calculateRowDetails(item.price, item.quantity);
-
-                  return (
-                    <tr
-                      key={item.id}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="px-4 py-3 font-medium">{i + 1}</td>
-                      <td className="px-4 py-3 text-center">{item.name}</td>
-                      <td className="px-4 py-3 text-center">{item.brand}</td>
-                      <td className="px-4 py-3 text-center">{item.quantity}</td>
-                      <td className="px-4 py-3 text-right">
-                        {formatCurrency(item.price)}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        {formatCurrency(netAmount)}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        {formatCurrency(taxableAmount)}
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        {formatCurrency(gstAmount)}
-                      </td>
-                      <td className="px-4 py-3 text-right font-bold text-gray-900">
-                        {formatCurrency(totalRaw)}
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="text-gray-400 hover:text-red-500 transition-colors p-1"
-                          title="Remove Item"
-                        >
-                          <RxCross2 size={20} />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
         <div className="flex flex-col md:flex-row justify-between items-start gap-6">
           <button
             onClick={handlePrint}
@@ -308,6 +279,7 @@ const Input = ({ className = "", label, ref, ...props }) => {
       <input
         ref={ref}
         {...props}
+        required
         className={`w-full outline-none border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400 ${className}`}
       />
     </div>
