@@ -4,12 +4,13 @@ import axios from "axios";
 import AppContext from "../context/AppContext";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState("Login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setToken, backendUrl, loading, setLoading } = useContext(AppContext);
+  const { setToken, backendUrl } = useContext(AppContext);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();

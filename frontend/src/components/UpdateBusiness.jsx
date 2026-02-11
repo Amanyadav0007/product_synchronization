@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const UpdateBusiness = () => {
+  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const [businessDetails, setBusinessDetails] = useState({
@@ -18,8 +19,7 @@ const UpdateBusiness = () => {
     msme: "",
   });
 
-  const { backendUrl, profile, token, loading, setLoading } =
-    useContext(AppContext);
+  const { backendUrl, profile, token } = useContext(AppContext);
 
   useEffect(() => {
     if (profile) {

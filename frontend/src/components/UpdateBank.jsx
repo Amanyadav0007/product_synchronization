@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import Input from "./Input";
 
 const UpdateBank = () => {
-  const { backendUrl, profile, token, loading, setLoading } =
-    useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const { backendUrl, profile, token } = useContext(AppContext);
 
   const [isEditing, setIsEditing] = useState(false);
   const [bankDetails, setBankDetails] = useState({

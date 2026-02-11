@@ -2,11 +2,11 @@ import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 import { RxCross2 } from "react-icons/rx";
+
 const Addproduct = () => {
-  const { backendUrl, token, loading, setLoading, navigate } =
-    useContext(AppContext);
+  const [loading, setLoading] = useState(false);
+  const { backendUrl, token, navigate } = useContext(AppContext);
 
   const [product, setProduct] = useState({
     name: "",
@@ -45,7 +45,6 @@ const Addproduct = () => {
   return (
     <div className="w-full md:m-6 m-2">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-6 sm:p-8">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-gray-800">Add Product</h2>
           <button
@@ -55,8 +54,6 @@ const Addproduct = () => {
             <RxCross2 className="text-2xl text-gray-600" />
           </button>
         </div>
-
-        {/* Form */}
         <form onSubmit={onSubmitHandler} className="flex flex-col gap-4">
           <Input
             label="Name"

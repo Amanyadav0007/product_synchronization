@@ -6,8 +6,9 @@ import Product from "../components/Product";
 import { CiEdit, CiTrash } from "react-icons/ci";
 
 const Products = () => {
+  const [loading, setLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
-  const { backendUrl, token, loading, setLoading } = useContext(AppContext);
+  const { backendUrl, token } = useContext(AppContext);
 
   const [editLoading, setEditLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);

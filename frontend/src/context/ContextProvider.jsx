@@ -6,7 +6,6 @@ import axios from "axios";
 
 const ContextProvider = (props) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState([]);
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
@@ -41,14 +40,12 @@ const ContextProvider = (props) => {
     () => ({
       backendUrl,
       token,
-      loading,
       profile,
       setProfile,
-      setLoading,
       navigate,
       setToken,
     }),
-    [backendUrl, token, profile, loading, navigate],
+    [backendUrl, token, profile, navigate],
   );
 
   return (
